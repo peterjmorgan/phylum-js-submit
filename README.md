@@ -23,6 +23,18 @@ npm install
 ```
 
 ## Usage
+```
+$ node phylum-js-submit.js -h
+Options:
+      --version     Show version number                                [boolean]
+  -t, --type        Type of file to process (`package` or `yarn`, defaults to
+                    `package`)                                          [string]
+  -H, --heuristics  Submit previously processed packages for heuristics only,
+                    not a full processing run                          [boolean]
+  -d, --dry-run     Print the list of packages that would be submitted, but do
+                    not actually submit them                           [boolean]
+  -h, --help        Show help                                          [boolean]
+```
 Submit a package-lock.json textfile to Phylum API
 ```sh
 phylum-js-submit.js -t package <path_to_package-lock.json>
