@@ -11,5 +11,8 @@
   "dependencies": {
     "@yarnpkg/lockfile": "^1.1.0",
     "yargs": "^16.2.0"
+  },
+  "bin": {
+    "phylum-js-submit": "./phylum-js-submit.js"
   }
 }
