@@ -21,6 +21,10 @@ cd phylum-js-submit
 ```sh
 npm install
 ```
+5. Optionally, install globally so phylum-js-submit is set up in NPM's path
+```sh
+npm install -g
+```
 
 ## Usage
 ```
