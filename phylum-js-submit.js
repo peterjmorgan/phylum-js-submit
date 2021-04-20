@@ -69,7 +69,7 @@ function parseYarnLock(file) {
          break;
       }
 
-      const dep_name = key.substring(0, key.lastIndexOf('@')); 
+      const dep_name = key.substring(0, key.lastIndexOf('@'));
       recs.push({
          'name': dep_name,
          'version': dependencies[key]['version']
@@ -141,20 +141,36 @@ if (argv['heuristics']) {
 } else {
    // Submit the list of packages for ingestion and processing
    let stdinStream = new stream.Readable();
+   let stdoutStream = new stream.Writable({
+      write(chunk, encoding, callback) {
+         console.log('writing chunk: ', chunk.toString());
+         callback();
+      }
+   });
+   let jsontransform = new stream.Transform({
+      writableObjectMode: true,
+      transform(chunk, encoding, callback) {
+         this.push(JSON.stringify(chunk));
+         callback();
+      }
+   });
+
+   let writeStream = fs.createWriteStream('./output');
+
    for (const p of packages) {
       let cli_input = `${p['name']}:${p['version']}\n`
       stdinStream.push(cli_input);
    }
-
    stdinStream.push(null);
+   stdinStream.pipe(writeStream);
 
-   child = execFile('phylum-cli', ['batch', '-t', 'npm'], (err, stdout, stderr) => {
-         console.log(stdout);
-         console.log(stderr);
-      });
-   stdinStream.pipe(child.stdin);
+   // stdinStream.pipe(jsontransform);
+   // jsontransform.pipe(stdoutStream);
 
-   if (!!child.err) {
-      console.log(child.err);
-   }
+
+   // child = execFile('phylum-cli', ['batch', '-t', 'npm'], (err, stdout, stderr) => {
+         // console.log(stdout);
+         // console.log(stderr);
+      // });
+   // stdinStream.pipe(child.stdin);
 }
